@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CAT Hukum Newton - Kelas X</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #eef2ff, #dbeafe);
+    min-height: 100vh;
+    color: #172033;
+}
+
+.container {
+    width: 95%;
+    max-width: 950px;
+    margin: 30px auto;
+}
+
+.card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #1e3a8a;
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #1e3a8a;
+}
+
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    margin-bottom: 25px;
+}
+
+input {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #cbd5e1;
+    border-radius: 10px;
+    margin: 8px 0 18px;
+    font-size: 16px;
+}
+
+button {
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 13px 20px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.primary {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+    margin-top: 10px;
+}
+
+.primary:hover {
+    background: #1d4ed8;
+}
+
+.hidden {
+    display: none;
+}
+
+.instructions {
+    line-height: 1.7;
+    margin: 20px 0;
+}
+
+.instructions li {
+    margin-bottom: 8px;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.timer {
+    background: #fee2e2;
+    color: #b91c1c;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.progress {
+    background: #e2e8f0;
+    height: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #2563eb;
+    width: 0%;
+    transition: 0.3s;
+}
+
+.question {
+    font-size: 20px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.option {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin: 10px 0;
+    padding: 15px;
+    background: #f8fafc;
+    border: 2px solid #cbd5e1;
+    color: #172033;
+}
+
+.option:hover {
+    background: #eff6ff;
+    border-color: #60a5fa;
+}
+
+.option.selected {
+    background: #dbeafe;
+    border-color: #2563eb;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.nav button {
+    flex: 1;
+}
+
+.prev {
+    background: #64748b;
+    color: white;
+}
+
+.next {
+    background: #2563eb;
+    color: white;
+}
+
+.ragu {
+    background: #f59e0b;
+    color: white;
+}
+
+.question-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 7px;
+    margin-top: 25px;
+}
+
+.q-number {
+    padding: 9px 4px;
+    background: #e2e8f0;
+    text-align: center;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.q-number.answered {
+    background: #22c55e;
+    color: white;
+}
+
+.q-number.ragu {
+    background: #f59e0b;
+    color: white;
+}
+
+.result {
+    text-align: center;
+}
+
+.score {
+    font-size: 60px;
+    font-weight: bold;
+    color: #2563eb;
+    margin: 20px;
+}
+
+.result-box {
+    background: #f8fafc;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 20px 0;
+    line-height: 2;
+}
+
+@media(max-width:600px) {
+    .card {
+        padding: 20px;
+    }
+
+    .question-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .question {
+        font-size: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HALAMAN IDENTITAS -->
+<div id="startPage" class="card">
+    <h1>CAT HUKUM NEWTON</h1>
+    <p class="subtitle">Computer Assisted Test - Fisika Kelas X</p>
+
+    <label>Nama Peserta</label>
+    <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+
+    <label>Kelas</label>
+    <input type="text" id="kelas" placeholder="Contoh: X IPA 1">
+
+    <button class="primary" onclick="mulai()">MULAI TES</button>
+</div>
+
+
+<!-- PETUNJUK -->
+<div id="instructionPage" class="card hidden">
+    <h1>Petunjuk Pengerjaan</h1>
+
+    <ol class="instructions">
+        <li>Jumlah soal sebanyak <b>20 soal</b>.</li>
+        <li>Waktu pengerjaan adalah <b>30 menit</b>.</li>
+        <li>Pilih satu jawaban yang paling tepat.</li>
+        <li>Gunakan tombol <b>Sebelumnya</b> dan <b>Berikutnya</b> untuk berpindah soal.</li>
+        <li>Gunakan tombol <b>Ragu-Ragu</b> jika belum yakin dengan jawaban.</li>
+        <li>Jawaban akan tersimpan secara otomatis.</li>
+        <li>Jika waktu habis, tes akan dikumpulkan secara otomatis.</li>
+        <li>Nilai akan muncul setelah semua jawaban dikumpulkan.</li>
+    </ol>
+
+    <button class="primary" onclick="mulaiTes()">MULAI MENGERJAKAN</button>
+</div>
+
+
+<!-- HALAMAN TES -->
+<div id="testPage" class="card hidden">
+
+    <div class="topbar">
+        <b id="nomorSoal">Soal 1 dari 20</b>
+        <div class="timer">
+            Waktu: <span id="timer">30:00</span>
+        </div>
+    </div>
+
+    <div class="progress">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <div id="questionText" class="question"></div>
+
+    <div id="options"></div>
+
+    <div class="nav">
+        <button class="prev" onclick="sebelumnya()">Sebelumnya</button>
+        <button class="ragu" onclick="toggleRagu()">Ragu-Ragu</button>
+        <button class="next" onclick="berikutnya()">Berikutnya</button>
+    </div>
+
+    <div id="questionGrid" class="question-grid"></div>
+
+    <button class="primary" onclick="selesai()">KUMPULKAN JAWABAN</button>
+
+</div>
+
+
+<!-- HASIL -->
+<div id="resultPage" class="card hidden result">
+
+    <h1>HASIL TES</h1>
+
+    <p id="hasilNama"></p>
+
+    <div class="score" id="nilai"></div>
+
+    <div class="result-box">
+        <p><b>Jumlah Benar:</b> <span id="benar"></span></p>
+        <p><b>Jumlah Salah:</b> <span id="salah"></span></p>
+        <p><b>Jumlah Soal:</b> 20</p>
+    </div>
+
+    <h2 id="pesan"></h2>
+
+    <button class="primary" onclick="location.reload()">SELESAI</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* ============================
+   BANK SOAL HUKUM NEWTON
+============================ */
+
+const bankSoal = [
+
+{
+    soal: "Sebuah benda akan tetap diam atau bergerak lurus beraturan jika resultan gaya yang bekerja padanya adalah ...",
+    pilihan: [
+        "Nol",
+        "Sangat besar",
+        "Selalu berubah",
+        "Tidak dapat ditentukan"
+    ],
+    jawaban: 0
+},
+
+{
+    soal: "Hukum I Newton disebut juga hukum ...",
+    pilihan: [
+        "Aksi-reaksi",
+        "Kelembaman",
+        "Percepatan",
+        "Gravitasi"
+    ],
+    jawaban: 1
+},
+
+{
+    soal: "Ketika bus tiba-tiba bergerak maju, tubuh penumpang cenderung terdorong ke belakang. Peristiwa tersebut merupakan contoh ...",
+    pilihan: [
+        "Hukum I Newton",
+        "Hukum II Newton",
+        "Hukum III Newton",
+        "Hukum Pascal"
+    ],
+    jawaban: 0
+},
+
+{
+    soal: "Satuan gaya dalam Sistem Internasional adalah ...",
+    pilihan: [
+        "Joule",
+        "Watt",
+        "Newton",
+        "Pascal"
+    ],
+    jawaban: 2
+},
+
+{
+    soal: "Rumus Hukum II Newton adalah ...",
+    pilihan: [
+        "F = m/a",
+        "F = ma",
+        "F = a/m",
+        "F = m + a"
+    ],
+    jawaban: 1
+},
+
+{
+    soal: "Sebuah benda bermassa 5 kg diberi gaya sebesar 20 N. Besar percepatannya adalah ...",
+    pilihan: [
+        "2 m/s²",
+        "4 m/s²",
+        "5 m/s²",
+        "10 m/s²"
+    ],
+    jawaban: 1
+},
+
+{
+    soal: "Jika gaya yang diberikan kepada suatu benda diperbesar sedangkan massanya tetap, maka percepatan benda akan ...",
+    pilihan: [
+        "Berkurang",
+        "Tetap",
+        "Bertambah",
+        "Menjadi nol"
+    ],
+    jawaban: 2
+},
+
+{
+    soal: "Sebuah benda bermassa 10 kg mengalami percepatan 3 m/s². Resultan gaya pada benda tersebut adalah ...",
+    pilihan: [
+        "3 N",
+        "10 N",
+        "13 N",
+        "30 N"
+    ],
+    jawaban: 3
+},
+
+{
+    soal: "Jika resultan gaya pada sebuah benda adalah 0 N, maka benda tersebut ...",
+    pilihan: [
+        "Pasti diam",
+        "Pasti bergerak dipercepat",
+        "Dapat diam atau bergerak dengan kecepatan tetap",
+        "Pasti bergerak melingkar"
+    ],
+    jawaban: 2
+},
+
+{
+    soal: "Gaya 15 N bekerja pada benda bermassa 3 kg. Percepatan benda adalah ...",
+    pilihan: [
+        "3 m/s²",
+        "5 m/s²",
+        "15 m/s²",
+        "45 m/s²"
+    ],
+    jawaban: 1
+},
+
+{
+    soal: "Hukum III Newton membahas tentang ...",
+    pilihan: [
+        "Kelembaman",
+        "Percepatan",
+        "Aksi dan reaksi",
+        "Energi"
+    ],
+    jawaban: 2
+},
+
+{
+    soal: "Saat seseorang mendorong dinding, dinding memberikan gaya kepada orang tersebut. Hal ini merupakan contoh ...",
+    pilihan: [
+        "Hukum I Newton",
+        "Hukum II Newton",
+        "Hukum III Newton",
+        "Hukum Ohm"
+    ],
+    jawaban: 2
+},
+
+{
+    soal: "Pasangan gaya aksi dan reaksi memiliki besar yang ...",
+    pilihan: [
+        "Selalu berbeda",
+        "Sama besar dan berlawanan arah",
+        "Sama arah",
+        "Tidak berhubungan"
+    ],
+    jawaban: 1
+},
+
+{
+    soal: "Roket dapat bergerak ke atas karena gas didorong ke bawah. Prinsip ini merupakan penerapan ...",
+    pilihan: [
+        "Hukum I Newton",
+        "Hukum II Newton",
+        "Hukum III Newton",
+        "Hukum Archimedes"
+    ],
+    jawaban: 2
+},
+
+{
+    soal: "Sebuah benda mendapat gaya 10 N ke kanan dan 4 N ke kiri. Resultan gayanya adalah ...",
+    pilihan: [
+        "6 N ke kanan",
+        "6 N ke kiri",
+        "14 N ke kanan",
+        "14 N ke kiri"
+    ],
+    jawaban: 0
+},
+
+{
+    soal: "Dua gaya masing-masing 8 N dan 5 N bekerja pada benda dalam arah yang sama. Resultan gayanya adalah ...",
+    pilihan: [
+        "3 N",
+        "8 N",
+        "13 N",
+        "40 N"
+    ],
+    jawaban: 2
+},
+
+{
+    soal: "Sebuah benda mendapat dua gaya yang sama besar tetapi berlawanan arah. Resultan gaya pada benda adalah ...",
+    pilihan: [
+        "0 N",
+        "1 N",
+        "2 N",
+        "Tidak terbatas"
+    ],
+    jawaban: 0
+},
+
+{
+    soal: "Penumpang terdorong ke depan ketika mobil direm mendadak. Hal tersebut terjadi karena ...",
+    pilihan: [
+        "Gaya gravitasi",
+        "Kelembaman tubuh",
+        "Gaya magnet",
+        "Gaya listrik"
+    ],
+    jawaban: 1
+},
+
+{
+    soal: "Jika massa benda diperbesar sementara gaya tetap, maka percepatan benda akan ...",
+    pilihan: [
+        "Bertambah",
+        "Berkurang",
+        "Tetap",
+        "Tidak berubah sama sekali"
+    ],
+    jawaban: 1
+},
+
+{
+    soal: "Sebuah benda bermassa 2 kg diberi gaya 12 N. Percepatan benda adalah ...",
+    pilihan: [
+        "4 m/s²",
+        "6 m/s²",
+        "10 m/s²",
+        "24 m/s²"
+    ],
+    jawaban: 1
+}
+
+];
+
+
+/* ============================
+   VARIABEL SISTEM
+============================ */
+
+let soal = [];
+let jawabanSiswa = [];
+let raguRagu = [];
+let index = 0;
+let waktu = 1800;
+let timerInterval;
+
+
+/* ============================
+   HALAMAN AWAL
+============================ */
+
+function mulai() {
+
+    const nama = document.getElementById("nama").value.trim();
+    const kelas = document.getElementById("kelas").value.trim();
+
+    if (nama === "" || kelas === "") {
+        alert("Silakan isi nama dan kelas terlebih dahulu.");
+        return;
+    }
+
+    document.getElementById("startPage").classList.add("hidden");
+    document.getElementById("instructionPage").classList.remove("hidden");
+}
+
+
+/* ============================
+   MULAI TES
+============================ */
+
+function mulaiTes() {
+
+    soal = [...bankSoal];
+
+    // Mengacak soal
+    soal.sort(() => Math.random() - 0.5);
+
+    // Mengacak pilihan jawaban
+    soal.forEach(item => {
+
+        const benarText = item.pilihan[item.jawaban];
+
+        item.pilihan.sort(() => Math.random() - 0.5);
+
+        item.jawaban = item.pilihan.indexOf(benarText);
+    });
+
+    jawabanSiswa = new Array(soal.length).fill(null);
+    raguRagu = new Array(soal.length).fill(false);
+
+    index = 0;
+
+    document.getElementById("instructionPage").classList.add("hidden");
+    document.getElementById("testPage").classList.remove("hidden");
+
+    tampilkanSoal();
+    mulaiTimer();
+}
+
+
+/* ============================
+   MENAMPILKAN SOAL
+============================ */
+
+function tampilkanSoal() {
+
+    const current = soal[index];
+
+    document.getElementById("nomorSoal").innerText =
+        "Soal " + (index + 1) + " dari " + soal.length;
+
+    document.getElementById("questionText").innerText =
+        current.soal;
+
+    const options = document.getElementById("options");
+
+    options.innerHTML = "";
+
+    current.pilihan.forEach((pilihan, i) => {
+
+        const button = document.createElement("button");
+
+        button.className = "option";
+
+        if (jawabanSiswa[index] === i) {
+            button.classList.add("selected");
+        }
+
+        button.innerText =
+            String.fromCharCode(65 + i) + ". " + pilihan;
+
+        button.onclick = function() {
+            pilihJawaban(i);
+        };
+
+        options.appendChild(button);
+    });
+
+    updateProgress();
+    updateGrid();
+}
+
+
+/* ============================
+   MEMILIH JAWABAN
+============================ */
+
+function pilihJawaban(i) {
+
+    jawabanSiswa[index] = i;
+
+    tampilkanSoal();
+}
+
+
+/* ============================
+   NAVIGASI
+============================ */
+
+function berikutnya() {
+
+    if (index < soal.length - 1) {
+        index++;
+        tampilkanSoal();
+    }
+}
+
+function sebelumnya() {
+
+    if (index > 0) {
+        index--;
+        tampilkanSoal();
+    }
+}
+
+
+/* ============================
+   RAGU-RAGU
+============================ */
+
+function toggleRagu() {
+
+    raguRagu[index] = !raguRagu[index];
+
+    updateGrid();
+}
+
+
+/* ============================
+   GRID NOMOR SOAL
+============================ */
+
+function updateGrid() {
+
+    const grid = document.getElementById("questionGrid");
+
+    grid.innerHTML = "";
+
+    for (let i = 0; i < soal.length; i++) {
+
+        const button = document.createElement("div");
+
+        button.className = "q-number";
+
+        button.innerText = i + 1;
+
+        if (jawabanSiswa[i] !== null) {
+            button.classList.add("answered");
+        }
+
+        if (raguRagu[i]) {
+            button.classList.add("ragu");
+        }
+
+        button.onclick = function() {
+            index = i;
+            tampilkanSoal();
+        };
+
+        grid.appendChild(button);
+    }
+}
+
+
+/* ============================
+   PROGRESS BAR
+============================ */
+
+function updateProgress() {
+
+    const persen =
+        ((index + 1) / soal.length) * 100;
+
+    document.getElementById("progressBar").style.width =
+        persen + "%";
+}
+
+
+/* ============================
+   TIMER
+============================ */
+
+function mulaiTimer() {
+
+    clearInterval(timerInterval);
+
+    timerInterval = setInterval(function() {
+
+        waktu--;
+
+        let menit = Math.floor(waktu / 60);
+        let detik = waktu % 60;
+
+        document.getElementById("timer").innerText =
+            String(menit).padStart(2, "0") +
+            ":" +
+            String(detik).padStart(2, "0");
+
+        if (waktu <= 0) {
+
+            clearInterval(timerInterval);
+
+            alert("Waktu habis. Jawaban akan dikumpulkan otomatis.");
+
+            hitungNilai();
+        }
+
+    }, 1000);
+}
+
+
+/* ============================
+   SELESAI
+============================ */
+
+function selesai() {
+
+    const belumDijawab =
+        jawabanSiswa.filter(x => x === null).length;
+
+    if (belumDijawab > 0) {
+
+        const yakin = confirm(
+            "Masih ada " + belumDijawab +
+            " soal yang belum dijawab.\n\n" +
+            "Apakah kamu yakin ingin mengumpulkan?"
+        );
+
+        if (!yakin) {
+            return;
+        }
+    }
+
+    hitungNilai();
+}
+
+
+/* ============================
+   MENGHITUNG NILAI
+============================ */
+
+function hitungNilai() {
+
+    clearInterval(timerInterval);
+
+    let benar = 0;
+
+    for (let i = 0; i < soal.length; i++) {
+
+        if (jawabanSiswa[i] === soal[i].jawaban) {
+            benar++;
+        }
+    }
+
+    let salah = soal.length - benar;
+
+    let nilai =
+        Math.round((benar / soal.length) * 100);
+
+    document.getElementById("testPage").classList.add("hidden");
+    document.getElementById("resultPage").classList.remove("hidden");
+
+    const nama =
+        document.getElementById("nama").value;
+
+    document.getElementById("hasilNama").innerText =
+        "Peserta: " + nama;
+
+    document.getElementById("nilai").innerText =
+        nilai;
+
+    document.getElementById("benar").innerText =
+        benar;
+
+    document.getElementById("salah").innerText =
+        salah;
+
+    let pesan = "";
+
+    if (nilai >= 90) {
+        pesan = "Hebat! Pemahaman Hukum Newton sangat baik.";
+    }
+    else if (nilai >= 75) {
+        pesan = "Bagus! Tingkatkan lagi pemahamanmu.";
+    }
+    else if (nilai >= 60) {
+        pesan = "Cukup baik. Mari belajar Hukum Newton lagi.";
+    }
+    else {
+        pesan = "Tetap semangat! Pelajari kembali konsep Hukum Newton.";
+    }
+
+    document.getElementById("pesan").innerText =
+        pesan;
+}
+
+</script>
+
+</body>
+</html>
